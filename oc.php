@@ -204,5 +204,22 @@ else {
 </table>
 </form>
 
+OR
+
+<form action="stops.php" method="get">
+<table border='1'>
+<tr>
+<td>Street:</td>
+<td><input type="text" name="street"/></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>
+<input type="submit" />
+</td>
+</tr>
+</table>
+</form>
+
 </body>
 </html>
