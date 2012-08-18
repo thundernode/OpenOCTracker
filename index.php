@@ -40,7 +40,7 @@
 
 OR
 
-<form action="stops.php" method="get">
+<form action="oc.php" method="get">
 <table border='1'>
 <tr>
 <td>Street:</td>

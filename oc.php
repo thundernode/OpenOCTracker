@@ -19,7 +19,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <body>
 <?php
+/**
+ * @file
+ * stuff
+ */
 
+require 'stops.php';
 /**
  * Fetches XML from octranspo and converts it to JSON
  * $request should either be 'stopSum' if you want to get a summary of
@@ -151,8 +156,10 @@ function displayInfo($bus, $route) {
   }
 }
 
-
-if ($_GET['stop'] !== '' AND $_GET['route'] !== '') {
+if (isset($_GET['street'])) {
+  stopFind($_GET['street']);
+}
+elseif ($_GET['stop'] !== '' AND $_GET['route'] !== '') {
   $stop = getOCJson('stopSum', $_GET['stop']);
   $exists = checkStop($stop, $_GET['route']);
   if ($exists) {
@@ -205,8 +212,8 @@ else {
 </form>
 
 OR
-
-<form action="stops.php" method="get">
+</br>
+<form action="oc.php" method="get">
 <table border='1'>
 <tr>
 <td>Street:</td>
