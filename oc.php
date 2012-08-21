@@ -127,7 +127,8 @@ function genInfo($trip) {
   else {
     $time = explode('.', $trip->AdjustmentAge);
     echo "<td align='center'>";
-    echo $time[0] .  " min. " . round($time[1] * 60 / 100) . " sec. ago at ~" . $trip->GPSSpeed  . "km/h";
+    $fixtime = round($time[1] * 60 / 100);
+    echo "$time[0]  min. $fixtime sec. ago at <a href='https://maps.google.ca/maps?q=loc:$trip->Latitude,$trip->Longitude'>~$trip->GPSSpeed km/h</a>";
     echo "</td>";
   }
   echo '</tr>';
