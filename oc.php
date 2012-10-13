@@ -25,6 +25,20 @@
  */
 
 require 'stops.php';
+require 'creds.php';
+echo "<script type='text/javascript'>
+
+          var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '$analyticsid']);
+      _gaq.push(['_trackPageview']);
+
+              (function() {
+                              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                                                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                                                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                                                                    })();
+
+            </script>";
 /**
  * Fetches XML from octranspo and converts it to JSON
  * $request should either be 'stopSum' if you want to get a summary of
@@ -45,7 +59,6 @@ function getOCJson($request, $stop, $route = NULL) {
   curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
   curl_setopt($c, CURLOPT_FOLLOWLOCATION, TRUE);
   $response = curl_exec($c);
-  #$response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
   $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "", $response);
   $xml = simplexml_load_string($response);
   $json = json_encode($xml);

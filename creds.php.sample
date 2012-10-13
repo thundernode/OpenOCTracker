@@ -2,6 +2,5 @@
 
 $aID='';
 $aKey='';
-$siteURL='';
-
+$analyticsid='';
 ?>
