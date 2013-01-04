@@ -15,9 +15,7 @@
 <!--You should have received a copy of the GNU General Public License-->
 <!--along with OpenOCTracker.  If not, see <http://www.gnu.org/licenses/>.-->
 
-<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<body>
+
 <?php
 /**
  * @file
@@ -26,19 +24,32 @@
 
 require 'stops.php';
 require 'creds.php';
-echo "<script type='text/javascript'>
+?>
 
-          var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', '$analyticsid']);
-      _gaq.push(['_trackPageview']);
+<head>
 
-              (function() {
-                              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                                                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                                                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-                                                                    })();
+<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-            </script>";
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '<?= $analyticsid ?>']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body>
+<div style="width: 100%; margin: 0px auto; max-width: 650px;">
+
+<?php
 /**
  * Fetches XML from octranspo and converts it to JSON
  * $request should either be 'stopSum' if you want to get a summary of
@@ -103,9 +114,9 @@ function checkStop($stopjson, $userroute) {
  */
 function genHead($stop, $route) {
 	echo "<tr bordercolor='blue' bgcolor='#CCCCCC'>";
-	echo "<td align='center'>" . $route . "</td>";
-	echo "<td align='center'>" . $stop->StopNo . "</td>";
-	echo "<td align='center'>" . $stop->StopLabel . "</td>";
+	echo "<td id='left' align='center'>" . $route . "</td>";
+	echo "<td id='center' align='center'>" . $stop->StopNo . "</td>";
+	echo "<td id='right' align='center'>" . $stop->StopLabel . "</td>";
 	echo '</tr>';
 }
 
@@ -126,16 +137,16 @@ function genTitles() {
 function genInfo($trip) {
 
   echo '<tr>';
-  echo "<td align='center'>" . $trip->TripDestination . "</td>";
-  echo "<td align='center'>" . $trip->AdjustedScheduleTime . " min. </td>";
+  echo "<td style='width:47.5%' align='center'>" . $trip->TripDestination . "</td>";
+  echo "<td style='width:5%' align='center'>" . $trip->AdjustedScheduleTime . " min. </td>";
   if ($trip->AdjustmentAge < 0) {
-    echo "<td align='center'>";
+    echo "<td style='width:47.5%' align='center'>";
     echo 'Schedule';
     echo "</td>";
   }
   else {
     $time = explode('.', $trip->AdjustmentAge);
-    echo "<td align='center'>";
+    echo "<td style='width:47.5%' align='center'>";
     $fixtime = round($time[1] * 60 / 100);
     echo "$time[0]  min. $fixtime sec. ago at <a href='https://maps.google.ca/maps?q=loc:$trip->Latitude,$trip->Longitude'>~$trip->GPSSpeed km/h</a>";
     echo "</td>";
@@ -168,7 +179,9 @@ function displayInfo($bus, $route) {
 
 if (isset($_GET['street'])) {
 	if (!empty($_GET['street'])) {
+		echo "<div style='width: 400px; margin: 0px auto;'>";
 		stopFind($_GET['street']);
+		echo "</div>";
 	}
 }
 elseif (!empty($_GET['stop'])) {
@@ -180,9 +193,11 @@ elseif (!empty($_GET['stop'])) {
 			$exists = checkStop($stop, $route);
 			if ($exists) {
 			  $bus = getOCJson('stopGPS', $_GET['stop'], $route);
-			  echo "<table border='2' width='300'>";
+			  echo "<div style='width: 100%; max-width: 650px;'>";
+			  echo "<table border='2' style='width: 100%;'>";
 			  displayInfo($bus, $route);
 			  echo '</table>';
+			  echo '</div>';
 			  echo '</br>';
 			}
 			else {
@@ -192,23 +207,36 @@ elseif (!empty($_GET['stop'])) {
 	}
 	//elseif (empty($_GET['route'])){
 	else {
-		echo "<table border='2' width='300'>";
 		$routes = array_unique(listRoutes(getOCJson('stopSum', $_GET['stop'])));
-		foreach ($routes as $route) {
-			$bus = getOCJson('stopGPS', $_GET['stop'], $route);
-			displayInfo($bus, $route);
-		}
+		if (count($routes) <= 3) {
+			echo "<div style='width: 100%; max-width: 650px;'>";
+			echo "<table border='2' style='width: 100%;'>";
+			foreach ($routes as $route) {
+				$bus = getOCJson('stopGPS', $_GET['stop'], $route);
+				displayInfo($bus, $route);
+			}
 		echo '</table>';
+		echo "</div";
+		}
+		else {
+			$stop = $_GET['stop'];	
+			echo 'Which route would you like to view?';
+			echo '</br>';
+			foreach ($routes as $route) {
+			echo "<a href='/?stop=$stop&route=$route'>$route</a>   ";
+			}
+			echo '</br>';
+		}
 		echo '</br>';
 	}
 }
 else {
-  echo 'Welcome to OC Help Me! </br> </br>';
+  echo "<div style='width: 250px; margin: 0px auto;'> <h3> Welcome to OC Help Me! </h3> </div>";
 }
 ?>
 
 
-
+<div style="float: left; width: 100%; max-width: 300px;">
 <form method="get">
 <table border='1' width='300'>
 <tr>
@@ -227,9 +255,13 @@ else {
 </tr>
 </table>
 </form>
+</div>
 
-OR
-</br>
+<div style="float: left; width: 40px;">
+<a style='width: 20px; margin: 0px auto; display: block;'>OR</a>
+</div>
+
+<div style="float: left; width: 100%; max-width: 300px;">
 <form method="get">
 <table border='1' width='300'>
 <tr>
@@ -244,6 +276,8 @@ OR
 </tr>
 </table>
 </form>
+</div>
 
+</div>
 </body>
 </html>
