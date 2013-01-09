@@ -28,6 +28,11 @@ require 'creds.php';
 
 <head>
 
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" href="favicon.ico"/>
+<link rel="apple-touch-icon-precomposed" href="favicon.ico"/>
+
 <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
@@ -113,46 +118,54 @@ function checkStop($stopjson, $userroute) {
  * Generates the table headers for the schedule output
  */
 function genHead($stop, $route) {
-	echo "<tr bordercolor='blue' bgcolor='#CCCCCC'>";
-	echo "<td id='left' align='center'>" . $route . "</td>";
-	echo "<td id='center' align='center'>" . $stop->StopNo . "</td>";
-	echo "<td id='right' align='center'>" . $stop->StopLabel . "</td>";
-	echo '</tr>';
+  ?>
+  <tr bordercolor='blue' bgcolor='#CCCCCC'>
+  <td id='left' align='center'> <?= $route ?> </td>
+  <td id='center' align='center'> <?= $stop->StopNo ?> </td>
+  <td id='right' align='center'> <?= $stop->StopLabel ?> </td>
+  </tr>
+  <?php
 }
 
 /**
  * Generates the table titles for the schedule output
  */
 function genTitles() {
-	echo '<tr>';
-	echo "<td class='h' align='center'> Destination </td>";
-	echo "<td class='h' align='center'> in </td>";
-	echo "<td class='h' align='center'> Last Updated </td>";
-	echo '</tr>';
+  ?>
+  <tr>
+  <td class='h' align='center'> Destination </td>
+  <td class='h' align='center'> in </td>
+  <td class='h' align='center'> Last Updated </td>
+  </tr>
+  <?php
 }
 
 /**
  * Generates the table info for the schedule output
  */
 function genInfo($trip) {
-
-  echo '<tr>';
-  echo "<td style='width:47.5%' align='center'>" . $trip->TripDestination . "</td>";
-  echo "<td style='width:5%' align='center'>" . $trip->AdjustedScheduleTime . " min. </td>";
+  ?>
+  <tr>
+  <td style='width:47.5%' align='center'> <?= $trip->TripDestination ?> </td>
+  <td style='width:5%' align='center'> <?= $trip->AdjustedScheduleTime ?>  min. </td>
+  <?php
   if ($trip->AdjustmentAge < 0) {
-    echo "<td style='width:47.5%' align='center'>";
-    echo 'Schedule';
-    echo "</td>";
+    ?>
+    <td style='width:47.5%' align='center'> Schedule </td>
+    <?php
   }
   else {
     $time = explode('.', $trip->AdjustmentAge);
-    echo "<td style='width:47.5%' align='center'>";
     $fixtime = round($time[1] * 60 / 100);
-    echo "$time[0]  min. $fixtime sec. ago at <a href='https://maps.google.ca/maps?q=loc:$trip->Latitude,$trip->Longitude'>~$trip->GPSSpeed km/h</a>";
-    echo "</td>";
+    ?>
+    <td style='width:47.5%' align='center'>
+    <?= $time[0] ?> min. <?= $fixtime ?> sec. ago at <a href='https://maps.google.ca/maps?q=loc:<?= $trip->Latitude ?>,<?= $trip->Longitude ?>'>~<?= $trip->GPSSpeed ?> km/h</a>
+    </td>
+    <?php
   }
-  echo '</tr>';
-
+  ?>
+  </tr>
+  <?php
 }
 
 /**
@@ -162,7 +175,9 @@ function displayInfo($bus, $route) {
   $stop = $bus->GetNextTripsForStopResult;
   genHead($stop, $route);
   foreach ($stop->Route->RouteDirection as $routedir) {
-    echo "<tr><td class='h' colspan='3' align='center'>$routedir->Direction</td></tr>";
+    ?>
+    <tr><td class='h' colspan='3' align='center'> <?= $routedir->Direction ?> </td></tr>
+    <?php
     genTitles();
     foreach ($routedir->Trips as $trip) {
       if ($trip->Trip->TripDestination) {
@@ -171,67 +186,94 @@ function displayInfo($bus, $route) {
         }
       }
       else {
-        echo "<tr><td class='h' colspan='3' align='center'>No trips scheduled at this time</td></tr>";
+        ?>
+	<tr><td class='h' colspan='3' align='center'>No trips scheduled at this time</td></tr>
+	<?php
       }
     }
   }
 }
 
 if (isset($_GET['street'])) {
-	if (!empty($_GET['street'])) {
-		echo "<div style='width: 400px; margin: 0px auto;'>";
-		stopFind($_GET['street']);
-		echo "</div>";
-	}
+  if (!empty($_GET['street'])) {
+    ?>
+    <div style='width: 400px; margin: 0px auto;'>
+    <?php stopFind($_GET['street']); ?>
+    </div>
+    <?php
+  }
 }
 elseif (!empty($_GET['stop'])) {
-	if (!empty($_GET['route'])) {
-		$routes = explode(' ', $_GET['route']);
-		foreach ($routes as $route) {
-			$stop = getOCJson('stopSum', $_GET['stop']);
-			//$exists = checkStop($stop, $_GET['route']);
-			$exists = checkStop($stop, $route);
-			if ($exists) {
-			  $bus = getOCJson('stopGPS', $_GET['stop'], $route);
-			  echo "<div style='width: 100%; max-width: 650px;'>";
-			  echo "<table border='2' style='width: 100%;'>";
-			  displayInfo($bus, $route);
-			  echo '</table>';
-			  echo '</div>';
-			  echo '</br>';
-			}
-			else {
-			  echo "Sorry, the " .  $route . " doesn't appear to pass at stop number " . $_GET['stop'] . '.';
-			}
-		}
-	}
-	//elseif (empty($_GET['route'])){
-	else {
-		$routes = array_unique(listRoutes(getOCJson('stopSum', $_GET['stop'])));
-		if (count($routes) <= 3) {
-			echo "<div style='width: 100%; max-width: 650px;'>";
-			echo "<table border='2' style='width: 100%;'>";
-			foreach ($routes as $route) {
-				$bus = getOCJson('stopGPS', $_GET['stop'], $route);
-				displayInfo($bus, $route);
-			}
-		echo '</table>';
-		echo "</div";
-		}
-		else {
-			$stop = $_GET['stop'];	
-			echo 'Which route would you like to view?';
-			echo '</br>';
-			foreach ($routes as $route) {
-			echo "<a href='/?stop=$stop&route=$route'>$route</a>   ";
-			}
-			echo '</br>';
-		}
-		echo '</br>';
-	}
+  if (!empty($_GET['route'])) {
+    $routes = explode(' ', $_GET['route']);
+    foreach ($routes as $route) {
+      $stop = getOCJson('stopSum', $_GET['stop']);
+      $exists = checkStop($stop, $route);
+      if ($exists) {
+        $bus = getOCJson('stopGPS', $_GET['stop'], $route);
+        ?>
+        <div style='width: 100%; max-width: 650px;'>
+        <table border='2' style='width: 100%;'>
+        <?php
+        displayInfo($bus, $route);
+        ?>
+        </table>
+        </div>
+        </br>
+        <?php
+      }
+      else {
+        ?>
+        Sorry, the <?= $route ?> doesn't appear to pass at stop number <?= $_GET['stop'] ?>.
+        <?php
+      }
+  }
 }
 else {
-  echo "<div style='width: 250px; margin: 0px auto;'> <h3> Welcome to OC Help Me! </h3> </div>";
+  $routes = array_unique(listRoutes(getOCJson('stopSum', $_GET['stop'])));
+  if (count($routes) <= 5) {
+    ?>
+    <div style='width: 100%; max-width: 650px;'>
+    <?php
+    foreach ($routes as $route) {
+      ?>
+      <table border='2' style='width: 100%;'>
+      <?php
+      $bus = getOCJson('stopGPS', $_GET['stop'], $route);
+      displayInfo($bus, $route);
+      ?>
+      </table>
+      </br>
+      <?php
+    }
+    ?>
+    </div>
+    <?php
+  }
+  else {
+    $stop = $_GET['stop'];	
+    ?>
+    Which route would you like to view?
+    </br>
+    <?php
+    foreach ($routes as $route) {
+    ?>
+    <a href='/?stop=<?= $stop ?>&route=<?= $route ?>'><?= $route ?></a>
+    <?php
+  }
+  ?>
+  </br>
+  <?php
+  }
+  ?>
+  </br>
+  <?php
+  }
+}
+else {
+  ?>
+  <div style='width: 250px; margin: 0px auto;'> <h3> Welcome to OC Help Me! </h3> </div>
+  <?php
 }
 ?>
 
@@ -241,11 +283,11 @@ else {
 <table border='1' width='300'>
 <tr>
 <td>Stop:</td>
-<td><input width='100%' type="tel" name="stop" autocomplete="off" value="<?php echo $_GET['stop']?>" /></td>
+<td><input width='100%' type="tel" name="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" /></td>
 </tr>
 <tr>
 <td>Route:</td>
-<td><input width='100%' type="tel" name="route" autocomplete="off" value="<?php echo $_GET['route']?>" /></td>
+<td><input width='100%' type="tel" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" /></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
