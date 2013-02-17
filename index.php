@@ -144,9 +144,24 @@ function genTitles() {
  * Generates the table info for the schedule output
  */
 function genInfo($trip) {
+  if (preg_match('/6/',$trip->BusType) && preg_match('/4/',$trip->BusType)){
+    $type = '(60 or 40 Footer)';
+  }
+  elseif (preg_match('/6/',$trip->BusType)){
+    $type = '(60 Footer)';
+  }
+  elseif (preg_match('/4/',$trip->BusType)){
+    $type = '(40 Footer)';
+  }
+  elseif (preg_match('/DD/',$trip->BusType)){
+    $type = '(Double-Decker)';
+  }
+  else {
+    $type = '(Size Unknown)';
+  }
   ?>
   <tr>
-  <td style='width:47.5%' align='center'> <?= $trip->TripDestination ?> </td>
+  <td style='width:47.5%' align='center'> <?= $trip->TripDestination ?><br /><?= $type ?></td>
   <td style='width:5%' align='center'> <?= $trip->AdjustedScheduleTime ?>  min. </td>
   <?php
   if ($trip->AdjustmentAge < 0) {
