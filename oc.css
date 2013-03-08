@@ -1,0 +1,64 @@
+h3 {
+  width: 250px;
+  margin: 10px auto;
+}
+
+td
+{
+  text-align:center;
+}
+
+#Page {
+  width: 100%;
+  margin: 0px auto;
+  max-width: 650px;
+}
+
+#RouteStop {
+  float: left;
+  max-width: 300px;
+  width:100%;
+}
+
+#OrDiv {
+  float: left;
+  width: 40px;
+}
+
+#OrA {
+  width: 25px;
+  margin: 0px auto;
+  display: block;
+}
+
+#StopSearch {
+  float: left;
+  max-width: 300px;
+  width:100%;
+  padding-top: 10px;
+}
+
+#RouteList {
+  width: 400px;
+  margin: 0px auto;
+}
+
+.StopInfoTable {
+  width: 100%;
+  margin: 0px;
+  max-width: 650px;
+  padding-bottom:10px;
+}
+
+#ColLeft {
+  width: 47.5%;
+}
+
+#ColCenter {
+  width: 5%;
+}
+
+#ColRight {
+  width: 47.5%;
+}
+

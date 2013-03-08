@@ -27,13 +27,14 @@ require 'creds.php';
 ?>
 
 <head>
+<title> OC Help Me </title>
 
-<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" href="favicon.ico"/>
-<link rel="apple-touch-icon-precomposed" href="favicon.ico"/>
+<link rel="stylesheet" type="text/css" href="oc.css" />
 
+<link href='favicon.ico' rel='apple-touch-icon-precomposed' />
+<link href='favicon.ico' rel='icon' type='image/png' />
 <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 <script type="text/javascript">
@@ -52,7 +53,7 @@ require 'creds.php';
 </head>
 
 <body>
-<div style="width: 100%; margin: 0px auto; max-width: 650px;">
+<div id='Page'>
 
 <?php
 /**
@@ -120,9 +121,9 @@ function checkStop($stopjson, $userroute) {
 function genHead($stop, $route) {
   ?>
   <tr bordercolor='blue' bgcolor='#CCCCCC'>
-  <td id='left' align='center'> <?= $route ?> </td>
-  <td id='center' align='center'> <?= $stop->StopNo ?> </td>
-  <td id='right' align='center'> <?= $stop->StopLabel ?> </td>
+  <td id='ColLeft'> <?= $route ?> </td>
+  <td id='ColCenter'> <?= $stop->StopNo ?> </td>
+  <td id='ColRight'> <?= $stop->StopLabel ?> </td>
   </tr>
   <?php
 }
@@ -133,9 +134,9 @@ function genHead($stop, $route) {
 function genTitles() {
   ?>
   <tr>
-  <td class='h' align='center'> Destination </td>
-  <td class='h' align='center'> in </td>
-  <td class='h' align='center'> Last Updated </td>
+  <td class='h'> Destination </td>
+  <td class='h'> in </td>
+  <td class='h'> Last Updated </td>
   </tr>
   <?php
 }
@@ -161,19 +162,19 @@ function genInfo($trip) {
   }
   ?>
   <tr>
-  <td style='width:47.5%' align='center'> <?= $trip->TripDestination ?><br /><?= $type ?></td>
-  <td style='width:5%' align='center'> <?= $trip->AdjustedScheduleTime ?>  min. </td>
+  <td> <?= $trip->TripDestination ?><br /><?= $type ?></td>
+  <td> <?= $trip->AdjustedScheduleTime ?>  min. </td>
   <?php
   if ($trip->AdjustmentAge < 0) {
     ?>
-    <td style='width:47.5%' align='center'> Schedule </td>
+    <td> Schedule </td>
     <?php
   }
   else {
     $time = explode('.', $trip->AdjustmentAge);
     $fixtime = round($time[1] * 60 / 100);
     ?>
-    <td style='width:47.5%' align='center'>
+    <td>
     <?= $time[0] ?> min. <?= $fixtime ?> sec. ago at <a href='https://maps.google.ca/maps?q=loc:<?= $trip->Latitude ?>,<?= $trip->Longitude ?>'>~<?= $trip->GPSSpeed ?> km/h</a>
     </td>
     <?php
@@ -191,7 +192,7 @@ function displayInfo($bus, $route) {
   genHead($stop, $route);
   foreach ($stop->Route->RouteDirection as $routedir) {
     ?>
-    <tr><td class='h' colspan='3' align='center'> <?= $routedir->Direction ?> </td></tr>
+    <tr><td class='h' colspan='3'> <?= $routedir->Direction ?> </td></tr>
     <?php
     genTitles();
     foreach ($routedir->Trips as $trip) {
@@ -202,7 +203,7 @@ function displayInfo($bus, $route) {
       }
       else {
         ?>
-	<tr><td class='h' colspan='3' align='center'>No trips scheduled at this time</td></tr>
+	<tr><td class='h' colspan='3'>No trips scheduled at this time</td></tr>
 	<?php
       }
     }
@@ -212,7 +213,7 @@ function displayInfo($bus, $route) {
 if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
-    <div style='width: 400px; margin: 0px auto;'>
+    <div id='RouteList'>
     <?php stopFind($_GET['street']); ?>
     </div>
     <?php
@@ -227,14 +228,13 @@ elseif (!empty($_GET['stop'])) {
       if ($exists) {
         $bus = getOCJson('stopGPS', $_GET['stop'], $route);
         ?>
-        <div style='width: 100%; max-width: 650px;'>
-        <table border='2' style='width: 100%;'>
+        <div class='StopInfoTable'>
+        <table border='2'>
         <?php
         displayInfo($bus, $route);
         ?>
         </table>
         </div>
-        </br>
         <?php
       }
       else {
@@ -247,23 +247,18 @@ elseif (!empty($_GET['stop'])) {
 else {
   $routes = array_unique(listRoutes(getOCJson('stopSum', $_GET['stop'])));
   if (count($routes) <= 5) {
-    ?>
-    <div style='width: 100%; max-width: 650px;'>
-    <?php
     foreach ($routes as $route) {
       ?>
-      <table border='2' style='width: 100%;'>
+      <div class='StopInfoTable'>
+      <table border='2'>
       <?php
       $bus = getOCJson('stopGPS', $_GET['stop'], $route);
       displayInfo($bus, $route);
       ?>
       </table>
-      </br>
+      </div>
       <?php
     }
-    ?>
-    </div>
-    <?php
   }
   else {
     $stop = $_GET['stop'];	
@@ -287,48 +282,48 @@ else {
 }
 else {
   ?>
-  <div style='width: 250px; margin: 0px auto;'> <h3> Welcome to OC Help Me! </h3> </div>
+  <h3> Welcome to OC Help Me! </h3>
   <?php
 }
 ?>
 
 
-<div style="float: left; width: 100%; max-width: 300px;">
+<div id='RouteStop'>
 <form method="get">
 <table border='1' width='300'>
 <tr>
 <td>Stop:</td>
-<td><input width='100%' type="tel" name="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" /></td>
+<td><input type="tel" name="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /></td>
 </tr>
 <tr>
-<td>Route:</td>
-<td><input width='100%' type="tel" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" /></td>
+<td>Route(s):</td>
+<td><input type="tel" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
 <td>
-<input type="submit" />
+<input type="submit" value='Get Stop Info' />
 </td>
 </tr>
 </table>
 </form>
 </div>
 
-<div style="float: left; width: 40px;">
-<a style='width: 20px; margin: 0px auto; display: block;'>OR</a>
+<div id='OrDiv'>
+<a id='OrA'>&nbsp;</a>
 </div>
 
-<div style="float: left; width: 100%; max-width: 300px;">
+<div id='StopSearch'>
 <form method="get">
 <table border='1' width='300'>
 <tr>
-<td>Street:</td>
-<td><input type="text" name="street"/></td>
+<td>Street/Station:</td>
+<td><input type="text" name="street" placeholder="St Laurent" /></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
 <td>
-<input type="submit" />
+<input type="submit" value='Search For Stop' />
 </td>
 </tr>
 </table>

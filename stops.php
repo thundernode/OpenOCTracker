@@ -4,7 +4,7 @@ function stopFind($street) {
   while ($row = fgets($stops)) {
     if (preg_match("/$street/i", $row)) {
       $results = explode(',', $row);
-      print "<a href='/?stop=$results[0]&route='>$results[0]</a> <a href='https://maps.google.ca/maps?q=loc:$results[2],$results[3]'>$results[1]</a> </br>";
+      print "<a href='/?stop=$results[0]&route='>$results[0]</a><-Stop|Map-><a href='https://maps.google.ca/maps?q=loc:$results[2],$results[3]'>$results[1]</a> </br>";
     }
   }
 }
