@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <html>
 
 <!--This file is part of OpenOCTracker.-->
@@ -30,12 +31,11 @@ require 'creds.php';
 <title> OC Help Me </title>
 
 <link rel="stylesheet" type="text/css" href="oc.css" />
-
 <link href='favicon.ico' rel='apple-touch-icon-precomposed' />
 <link href='favicon.ico' rel='icon' type='image/png' />
 <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
 
 <script type="text/javascript">
 
@@ -53,7 +53,7 @@ require 'creds.php';
 </head>
 
 <body>
-<div id='Page'>
+<div id='Page' class="row-fluid">
 
 <?php
 /**
@@ -288,7 +288,7 @@ else {
 ?>
 
 
-<div id='RouteStop'>
+<div id='RouteStop' class="span4 offset2">
 <form method="get">
 <table border='1' width='300'>
 <tr>
@@ -313,7 +313,7 @@ else {
 <a id='OrA'>&nbsp;</a>
 </div>
 
-<div id='StopSearch'>
+<div id='StopSearch' class="span4">
 <form method="get">
 <table border='1' width='300'>
 <tr>
