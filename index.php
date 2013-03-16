@@ -30,7 +30,7 @@ require 'creds.php';
 <head>
 <title> OC Help Me </title>
 
-<link rel="stylesheet" type="text/css" href="oc.css" />
+<!--<link rel="stylesheet" type="text/css" href="oc.css" />-->
 <link href='favicon.ico' rel='apple-touch-icon-precomposed' />
 <link href='favicon.ico' rel='icon' type='image/png' />
 <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
@@ -213,7 +213,7 @@ function displayInfo($bus, $route) {
 if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
-    <div id='RouteList'>
+    <div id='RouteList' class="span10 offset1">
     <?php stopFind($_GET['street']); ?>
     </div>
     <?php
@@ -282,52 +282,37 @@ else {
 }
 else {
   ?>
-  <h3> Welcome to OC Help Me! </h3>
+  <div class="span8 offset2 centre">
+  	<h3> Welcome to OC Help Me! </h3>
+  </div>
   <?php
 }
 ?>
 
 
 <div id='RouteStop' class="span4 offset2">
-<form method="get">
-<table border='1' width='300'>
-<tr>
-<td>Stop:</td>
-<td><input type="tel" name="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /></td>
-</tr>
-<tr>
-<td>Route(s):</td>
-<td><input type="tel" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /></td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>
-<input type="submit" value='Get Stop Info' />
-</td>
-</tr>
-</table>
-</form>
+	<div class="row-fluid">
+		<form method="get">
+			<div class="span12">
+				<p><label for="stop">Stop:</label>
+				<input type="tel" name="stop" id="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /></p>	
+				<p><label for="route">Route(s):</label>
+				<input type="tel" id="route" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /></p>
+				<p><input type="submit" value='Get Stop Info' class="btn btn-primary"/></p>
+			</div>
+		</form>
+	</div>
 </div>
 
-<div id='OrDiv'>
-<a id='OrA'>&nbsp;</a>
-</div>
 
 <div id='StopSearch' class="span4">
-<form method="get">
-<table border='1' width='300'>
-<tr>
-<td>Street/Station:</td>
-<td><input type="text" name="street" placeholder="St Laurent" /></td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>
-<input type="submit" value='Search For Stop' />
-</td>
-</tr>
-</table>
-</form>
+	<form method="get">
+		<p><label for="street">Street/Station:</label>
+		<input id="street" type="text" name="street" placeholder="St Laurent" /></p>
+		<p>
+		<input type="submit" value='Search For Stop' class="btn btn-primary" />
+		</p>
+	</form>
 </div>
 
 </div>
