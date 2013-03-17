@@ -13,8 +13,8 @@ function findMe($lat,$lng){
       $results = explode(',', $row);
       ?>
       <tr>
-      <td><a href='/?stop=<?= $results[0] ?>&route='><?php $results[0] ?></a></td>
-      <td><a href='https://maps.google.ca/maps?q=loc:<?php $results[2].$results[3]?>'><?= $results[1] ?></a></td>
+      <td><a href='/?stop=<?php echo $results[0]; ?>&route='><?php echo $results[0]; ?></a></td>
+      <td><a href='https://maps.google.ca/maps?q=loc:<?php echo $results[2].$results[3];?>'><?php  echo $results[1]; ?></a></td>
       </tr>
     <?php
     }

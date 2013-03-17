@@ -217,7 +217,9 @@ if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
     <div id='RouteList' class="span10 offset1">
+    	<table class="table table-condensed table-striped">
     <?php stopFind($_GET['street']); ?>
+    	</table>
     </div>
     <?php
   }
@@ -226,8 +228,8 @@ if (isset($_GET['street'])) {
 elseif (isset($_GET['lat']) && isset($_GET['lng'])){
   if (!empty($_GET['lat']) && !empty($_GET['lng'])) {
     ?>
-    <div class='StopInfoTable'>
-    <table border='2'>
+    <div class='span8 offset2'>
+    <table class="table table-condensed">
     <?php findMe(substr($_GET['lat'], 0, 5), substr($_GET['lng'], 0, 6)); ?>
     </table>
     </div>
@@ -309,11 +311,12 @@ else {
 	<div class="row-fluid">
 		<form method="get">
 			<div class="span12">
-				<p><label for="stop">Stop:</label>
-				<input type="tel" name="stop" id="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /></p>	
-				<p><label for="route">Route(s):</label>
-				<input type="tel" id="route" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /></p>
-				<p><input type="submit" value='Get Stop Info' class="btn btn-primary"/></p>
+				<label for="stop">Stop:</label>
+				<input type="tel" name="stop" id="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /><br />	
+				<label for="route">Route(s):</label>
+				<input type="tel" id="route" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /><br />
+				<input type="submit" value='Get Stop Info' class="btn btn-success"/>
+				<hr />
 			</div>
 		</form>
 	</div>
@@ -322,17 +325,15 @@ else {
 
 <div id='StopSearch' class="span4">
 	<form method="get">
-		<p><label for="street">Street/Station:</label>
-		<input id="street" type="text" name="street" placeholder="St Laurent" /></p>
-		<p>
-		<input type="submit" value='Search For Stop' class="btn btn-primary" />
-		</p>
+		<label for="street">Street/Station:</label>
+		<input id="street" type="text" name="street" placeholder="St Laurent" /><br />
+		<input type="submit" value='Search For Stop' class="btn btn-info" />
 	</form>
+	<hr />
 </div>
 
-<div id='FindMe'>
-<button id='FindMeButton' onclick="findMe()">Find Me (only accurate on mobiles)</button>
-</div>
+<div id='FindMe' class="span4">
+<button id='FindMeButton' onclick="findMe()" class="btn btn-primary">Find Me (only accurate on mobiles)</button>
 </div>
 
 </body>
