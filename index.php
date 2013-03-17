@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<!DOCTYPE HTML>
-=======
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
->>>>>>> dev
 <html>
 
 <!--This file is part of OpenOCTracker.-->
@@ -35,12 +31,9 @@ require 'creds.php';
 <head>
 <title> OC Help Me </title>
 
-<<<<<<< HEAD
+
 <!--<link rel="stylesheet" type="text/css" href="oc.css" />-->
-=======
-<link rel="stylesheet" type="text/css" href="oc.css" />
 <script type="text/javascript" src="findme.js"></script>
->>>>>>> dev
 <link href='favicon.ico' rel='apple-touch-icon-precomposed' />
 <link href='favicon.ico' rel='icon' type='image/png' />
 <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
