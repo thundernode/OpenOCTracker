@@ -8,34 +8,50 @@ td
   text-align:center;
 }
 
+html,body {
+  height:100%;
+}
+
 #Page {
   width: 100%;
+  height:100%;
   margin: 0px auto;
   max-width: 650px;
 }
 
 #RouteStop {
   float: left;
-  max-width: 300px;
+  max-width:280px;
+  width:50%;
+}
+
+#RouteStopTable {
   width:100%;
-}
-
-#OrDiv {
-  float: left;
-  width: 40px;
-}
-
-#OrA {
-  width: 25px;
-  margin: 0px auto;
-  display: block;
+  max-width:280px;
 }
 
 #StopSearch {
   float: left;
-  max-width: 300px;
+  max-width:305px;
   width:100%;
-  padding-top: 10px;
+}
+
+#FindMe {
+  float: left;
+  max-width:650px;
+  width:100%;
+  padding-top:10px;
+  padding-bottom:20px;
+}
+
+#FindMeButton {
+  width:100%;
+  height:30px;
+}
+
+#StopSearchTable {
+  max-width:305px;
+  width:100%;
 }
 
 #RouteList {
@@ -50,15 +66,22 @@ td
   padding-bottom:10px;
 }
 
-#ColLeft {
+#ThreeColLeft {
   width: 47.5%;
 }
 
-#ColCenter {
+#ThreeColCenter {
   width: 5%;
 }
 
-#ColRight {
+#ThreeColRight {
   width: 47.5%;
 }
 
+#TwoColLeft {
+  width: 5%;
+}
+
+#TwoColRight {
+  width: 95%;
+}
