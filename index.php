@@ -223,12 +223,7 @@ function displayInfo($bus, $route) {
 if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
-<<<<<<< HEAD
     <div id='RouteList' class="span10 offset1">
-=======
-    <div class='StopInfoTable'>
-    <table border='2'>
->>>>>>> dev
     <?php stopFind($_GET['street']); ?>
     </div>
     <?php
@@ -317,8 +312,6 @@ else {
 }
 ?>
 
-
-<<<<<<< HEAD
 <div id='RouteStop' class="span4 offset2">
 	<div class="row-fluid">
 		<form method="get">
@@ -342,48 +335,12 @@ else {
 		<input type="submit" value='Search For Stop' class="btn btn-primary" />
 		</p>
 	</form>
-=======
-<div id='RouteStop'>
-<form method="get">
-<table id='RouteStopTable' border='1'>
-<tr>
-<td>Stop:</td>
-<td><input class='InputField' type="tel" name="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /></td>
-</tr>
-<tr>
-<td>Route(s):</td>
-<td><input class='InputField' type="tel" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /></td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>
-<input class='InputField' type="submit" value='Get Stop Info' />
-</td>
-</tr>
-</table>
-</form>
 </div>
 
-<div id='StopSearch'>
-<form method="get">
-<table id='StopSearchTable' border='1'>
-<tr>
-<td>Street/Station:</td>
-<td><input class='InputField' type="text" name="street" placeholder="St Laurent" /></td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>
-<input class='InputField' type="submit" value='Search For Stop' />
-</td>
-</tr>
-</table>
-</form>
->>>>>>> dev
-</div>
 <div id='FindMe'>
 <button id='FindMeButton' onclick="findMe()">Find Me (only accurate on mobiles)</button>
 </div>
 </div>
+
 </body>
 </html>
