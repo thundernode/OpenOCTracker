@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <!DOCTYPE HTML>
+=======
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+>>>>>>> dev
 <html>
 
 <!--This file is part of OpenOCTracker.-->
@@ -24,13 +28,19 @@
  */
 
 require 'stops.php';
+require 'findme.php';
 require 'creds.php';
 ?>
 
 <head>
 <title> OC Help Me </title>
 
+<<<<<<< HEAD
 <!--<link rel="stylesheet" type="text/css" href="oc.css" />-->
+=======
+<link rel="stylesheet" type="text/css" href="oc.css" />
+<script type="text/javascript" src="findme.js"></script>
+>>>>>>> dev
 <link href='favicon.ico' rel='apple-touch-icon-precomposed' />
 <link href='favicon.ico' rel='icon' type='image/png' />
 <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
@@ -121,9 +131,9 @@ function checkStop($stopjson, $userroute) {
 function genHead($stop, $route) {
   ?>
   <tr bordercolor='blue' bgcolor='#CCCCCC'>
-  <td id='ColLeft'> <?= $route ?> </td>
-  <td id='ColCenter'> <?= $stop->StopNo ?> </td>
-  <td id='ColRight'> <?= $stop->StopLabel ?> </td>
+  <td id='ThreeColLeft'> <?= $route ?> </td>
+  <td id='ThreeColCenter'> <?= $stop->StopNo ?> </td>
+  <td id='ThreeColRight'> <?= $stop->StopLabel ?> </td>
   </tr>
   <?php
 }
@@ -213,12 +223,30 @@ function displayInfo($bus, $route) {
 if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
+<<<<<<< HEAD
     <div id='RouteList' class="span10 offset1">
+=======
+    <div class='StopInfoTable'>
+    <table border='2'>
+>>>>>>> dev
     <?php stopFind($_GET['street']); ?>
     </div>
     <?php
   }
 }
+
+elseif (isset($_GET['lat']) && isset($_GET['lng'])){
+  if (!empty($_GET['lat']) && !empty($_GET['lng'])) {
+    ?>
+    <div class='StopInfoTable'>
+    <table border='2'>
+    <?php findMe(substr($_GET['lat'], 0, 5), substr($_GET['lng'], 0, 6)); ?>
+    </table>
+    </div>
+    <?php
+  }
+}
+
 elseif (!empty($_GET['stop'])) {
   if (!empty($_GET['route'])) {
     $routes = explode(' ', $_GET['route']);
@@ -290,6 +318,7 @@ else {
 ?>
 
 
+<<<<<<< HEAD
 <div id='RouteStop' class="span4 offset2">
 	<div class="row-fluid">
 		<form method="get">
@@ -313,8 +342,48 @@ else {
 		<input type="submit" value='Search For Stop' class="btn btn-primary" />
 		</p>
 	</form>
+=======
+<div id='RouteStop'>
+<form method="get">
+<table id='RouteStopTable' border='1'>
+<tr>
+<td>Stop:</td>
+<td><input class='InputField' type="tel" name="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /></td>
+</tr>
+<tr>
+<td>Route(s):</td>
+<td><input class='InputField' type="tel" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>
+<input class='InputField' type="submit" value='Get Stop Info' />
+</td>
+</tr>
+</table>
+</form>
 </div>
 
+<div id='StopSearch'>
+<form method="get">
+<table id='StopSearchTable' border='1'>
+<tr>
+<td>Street/Station:</td>
+<td><input class='InputField' type="text" name="street" placeholder="St Laurent" /></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>
+<input class='InputField' type="submit" value='Search For Stop' />
+</td>
+</tr>
+</table>
+</form>
+>>>>>>> dev
+</div>
+<div id='FindMe'>
+<button id='FindMeButton' onclick="findMe()">Find Me (only accurate on mobiles)</button>
+</div>
 </div>
 </body>
 </html>
