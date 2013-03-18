@@ -53,6 +53,11 @@ require 'creds.php';
   })();
 
 </script>
+
+<style type="text/css">
+	div.center-header {text-align: center};
+</style>
+
 </head>
 
 <body>
@@ -300,7 +305,7 @@ else {
 }
 else {
   ?>
-  <div class="span8 offset2 centre">
+  <div class="span8 offset2 center-header">
   	<h3> Welcome to OC Help Me! </h3>
   </div>
   <?php
