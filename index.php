@@ -237,7 +237,7 @@ elseif (isset($_GET['lat']) && isset($_GET['lng'])){
 
 elseif (!empty($_GET['stop'])) {
   if (!empty($_GET['route'])) {
-    $routes = explode(' ', $_GET['route']);
+    $routes = preg_split("/(\+|\ )/", $_GET['route']);
     foreach ($routes as $route) {
       $stop = getOCJson('stopSum', $_GET['stop']);
       $exists = checkStop($stop, $route);
@@ -313,7 +313,7 @@ else {
 </tr>
 <tr>
 <td>Route(s):</td>
-<td><input class='InputField' type="tel" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /></td>
+<td><input class='InputField' type="tel" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95+96" /></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
