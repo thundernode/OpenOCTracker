@@ -228,7 +228,7 @@ elseif (isset($_GET['lat']) && isset($_GET['lng'])){
     ?>
     <div class='StopInfoTable'>
     <table border='2'>
-    <?php findMe(substr($_GET['lat'], 0, 5), substr($_GET['lng'], 0, 6)); ?>
+    <?php findMe($_GET['lat'],$_GET['lng'],$_GET['acc']); ?>
     </table>
     </div>
     <?php
