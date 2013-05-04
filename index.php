@@ -210,48 +210,7 @@ function displayInfo($bus, $route) {
       }
     }
   }
-}
-
-if(count($_GET) == 0) {
-  ?>
-  <div class="span8 offset2 center-header">
-  	<h3> Welcome to OC Help Me! </h3>
-  </div>
-  <?php
-}
-?>
-
-
-
-<div id='RouteStop' class="span4 offset2">
-	<div class="row-fluid">
-		<form method="get">
-			<div class="span12">
-				<label for="stop">Stop:</label>
-				<input type="tel" name="stop" id="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /><br />	
-				<label for="route">Route(s):</label>
-				<input type="tel" id="route" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /><br />
-				<input type="submit" value='Get Stop Info' class="btn btn-success"/>
-				<hr />
-			</div>
-		</form>
-	</div>
-</div>
-
-
-<div id='StopSearch' class="span4">
-	<form method="get">
-		<label for="street">Street/Station:</label>
-		<input id="street" type="text" name="street" placeholder="St Laurent" /><br />
-		<input type="submit" value='Search For Stop' class="btn btn-info" />
-	</form>
-	<hr />
-</div>
-<div id='FindMe' class="span4">
-<button id='FindMeButton' onclick="findMe()" class="btn btn-primary">Find Me (only accurate on mobiles)</button>
-</div>
-<br />
-<?php        
+}        
 if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
@@ -321,10 +280,14 @@ else {
     ?>
     Which route would you like to view?
     </br>
+      
     <?php
     foreach ($routes as $route) {
     ?>
-    <a href='/?stop=<?= $stop ?>&route=<?= $route ?>'><?= $route ?></a>
+    <button class='btn-small' onclick="location.href='/?stop=<?= $stop ?>&route=<?= $route ?>'">
+<!--    <a href=></a>--><?= $route ?>
+    </button>
+        
     <?php
   }
   ?>
@@ -336,7 +299,46 @@ else {
   <?php
   }
 }
+else{
+  ?>
+  <div class="span8 offset2 center-header">
+  	<h3> Welcome to OC Help Me! </h3>
+  </div>
+  <?php
+}
 ?>
+
+
+
+<div id='RouteStop' class="span4 offset2">
+	<div class="row-fluid">
+		<form method="get">
+			<div class="span12">
+				<label for="stop">Stop:</label>
+				<input type="tel" name="stop" id="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /><br />	
+				<label for="route">Route(s):</label>
+				<input type="tel" id="route" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /><br />
+				<input type="submit" value='Get Stop Info' class="btn btn-success"/>
+				<hr />
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<div id='StopSearch' class="span4">
+	<form method="get">
+		<label for="street">Street/Station:</label>
+		<input id="street" type="text" name="street" placeholder="St Laurent" /><br />
+		<input type="submit" value='Search For Stop' class="btn btn-info" />
+	</form>
+	<hr />
+</div>
+<div id='FindMe' class="span4">
+<button id='FindMeButton' onclick="findMe()" class="btn btn-primary">Find Me (only accurate on mobiles)</button>
+</div>
+<br />
+
 </div>
 </body>
 </html>
