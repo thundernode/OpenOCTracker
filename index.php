@@ -36,7 +36,7 @@ require 'creds.php';
 <link href='favicon.ico' rel='apple-touch-icon-precomposed' />
 <link href='favicon.ico' rel='icon' type='image/png' />
 <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 <script type="text/javascript">
@@ -55,7 +55,7 @@ require 'creds.php';
 </head>
 
 <body>
-<div id='Page'>
+<div id='Page' class="row-fluid">
 
 <?php
 /**
@@ -212,11 +212,51 @@ function displayInfo($bus, $route) {
   }
 }
 
+if(count($_GET) == 0) {
+  ?>
+  <div class="span8 offset2 center-header">
+  	<h3> Welcome to OC Help Me! </h3>
+  </div>
+  <?php
+}
+?>
+
+
+
+<div id='RouteStop' class="span4 offset2">
+	<div class="row-fluid">
+		<form method="get">
+			<div class="span12">
+				<label for="stop">Stop:</label>
+				<input type="tel" name="stop" id="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /><br />	
+				<label for="route">Route(s):</label>
+				<input type="tel" id="route" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /><br />
+				<input type="submit" value='Get Stop Info' class="btn btn-success"/>
+				<hr />
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<div id='StopSearch' class="span4">
+	<form method="get">
+		<label for="street">Street/Station:</label>
+		<input id="street" type="text" name="street" placeholder="St Laurent" /><br />
+		<input type="submit" value='Search For Stop' class="btn btn-info" />
+	</form>
+	<hr />
+</div>
+<div id='FindMe' class="span4">
+<button id='FindMeButton' onclick="findMe()" class="btn btn-primary">Find Me (only accurate on mobiles)</button>
+</div>
+<br />
+<?php        
 if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
-    <div class='StopInfoTable'>
-    <table border='2'>
+    <div class='span6 offset3'>
+    <table border='2' class='table-condensed'>
     <?php stopFind($_GET['street']); ?>
     </div>
     <?php
@@ -226,7 +266,7 @@ if (isset($_GET['street'])) {
 elseif (isset($_GET['lat']) && isset($_GET['lng'])){
   if (!empty($_GET['lat']) && !empty($_GET['lng'])) {
     ?>
-    <div class='StopInfoTable'>
+    <div class='span6 offset3'>
     <table border='2'>
     <?php findMe($_GET['lat'],$_GET['lng'],$_GET['acc']); ?>
     </table>
@@ -244,7 +284,7 @@ elseif (!empty($_GET['stop'])) {
       if ($exists) {
         $bus = getOCJson('stopGPS', $_GET['stop'], $route);
         ?>
-        <div class='StopInfoTable'>
+        <div class='span6 offset3'>
         <table border='2'>
         <?php
         displayInfo($bus, $route);
@@ -265,7 +305,7 @@ else {
   if (count($routes) <= 5) {
     foreach ($routes as $route) {
       ?>
-      <div class='StopInfoTable'>
+      <div class='span6 offset3'>
       <table border='2'>
       <?php
       $bus = getOCJson('stopGPS', $_GET['stop'], $route);
@@ -296,54 +336,7 @@ else {
   <?php
   }
 }
-else {
-  ?>
-  <h3> Welcome to OC Help Me! </h3>
-  <?php
-}
 ?>
-
-
-<div id='RouteStop'>
-<form method="get">
-<table id='RouteStopTable' border='1'>
-<tr>
-<td>Stop:</td>
-<td><input class='InputField' type="tel" name="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /></td>
-</tr>
-<tr>
-<td>Route(s):</td>
-<td><input class='InputField' type="tel" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95+96" /></td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>
-<input class='InputField' type="submit" value='Get Stop Info' />
-</td>
-</tr>
-</table>
-</form>
-</div>
-
-<div id='StopSearch'>
-<form method="get">
-<table id='StopSearchTable' border='1'>
-<tr>
-<td>Street/Station:</td>
-<td><input class='InputField' type="text" name="street" placeholder="St Laurent" /></td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>
-<input class='InputField' type="submit" value='Search For Stop' />
-</td>
-</tr>
-</table>
-</form>
-</div>
-<div id='FindMe'>
-<button id='FindMeButton' onclick="findMe()">Find Me (only accurate on mobiles)</button>
-</div>
 </div>
 </body>
 </html>

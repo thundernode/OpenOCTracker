@@ -16,9 +16,10 @@ html,body {
   width: 100%;
   height:100%;
   margin: 0px auto;
-  max-width: 650px;
+  text-align: center;
+/*  max-width: 650px;*/
 }
-
+/*
 #RouteStop {
   float: left;
   max-width:280px;
@@ -84,4 +85,4 @@ html,body {
 
 #TwoColRight {
   width: 95%;
-}
+}*/
