@@ -37,6 +37,7 @@ require 'creds.php';
 <link href='favicon.ico' rel='apple-touch-icon-precomposed' />
 <link href='favicon.ico' rel='icon' type='image/png' />
 <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
 
@@ -221,10 +222,9 @@ function displayInfo($bus, $route) {
 if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
-    <div id='RouteList' class="span10 offset1">
-    	<table class="table table-condensed table-striped">
+    <div class='StopInfoTable'>
+    <table border='2'>
     <?php stopFind($_GET['street']); ?>
-    	</table>
     </div>
     <?php
   }
@@ -235,7 +235,7 @@ elseif (isset($_GET['lat']) && isset($_GET['lng'])){
     ?>
     <div class='span8 offset2'>
     <table class="table table-condensed">
-    <?php findMe(substr($_GET['lat'], 0, 5), substr($_GET['lng'], 0, 6)); ?>
+    <?php findMe($_GET['lat'],$_GET['lng'],$_GET['acc']); ?>
     </table>
     </div>
     <?php
@@ -244,7 +244,7 @@ elseif (isset($_GET['lat']) && isset($_GET['lng'])){
 
 elseif (!empty($_GET['stop'])) {
   if (!empty($_GET['route'])) {
-    $routes = explode(' ', $_GET['route']);
+    $routes = preg_split("/(\+|\ )/", $_GET['route']);
     foreach ($routes as $route) {
       $stop = getOCJson('stopSum', $_GET['stop']);
       $exists = checkStop($stop, $route);
@@ -326,8 +326,6 @@ else {
 		</form>
 	</div>
 </div>
-
-
 <div id='StopSearch' class="span4">
 	<form method="get">
 		<label for="street">Street/Station:</label>
@@ -336,10 +334,8 @@ else {
 	</form>
 	<hr />
 </div>
-
 <div id='FindMe' class="span4">
 <button id='FindMeButton' onclick="findMe()" class="btn btn-primary">Find Me (only accurate on mobiles)</button>
 </div>
-
 </body>
 </html>
