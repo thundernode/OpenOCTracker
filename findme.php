@@ -20,8 +20,8 @@ function findMe($lat,$lng,$acc){
   ?>
   <tr>
   <td id='TwoColLeft'>&nbsp;</td>
-  <td id='TwoColRight'><a href='https://maps.google.ca/maps?q=loc:<?=$lat?>,<?=$lng?>'>Device Reported Location (Within=<?= round($acc)?>m)</a><td>
-  </td>
+  <td id='TwoColRight'><a href='https://maps.google.ca/maps?q=loc:<?=$lat?>,<?=$lng?>'>Device Reported Location (Within=<?= round($acc)?>m)</a></td>
+  </tr>
   <tr>
   <td id='TwoColLeft'> Stop </td>
   <td id='TwoColRight'> Intersection/Map </td>

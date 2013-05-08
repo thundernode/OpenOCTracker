@@ -210,13 +210,15 @@ function displayInfo($bus, $route) {
       }
     }
   }
-}        
+}
+
 if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
     <div class='span6 offset3'>
     <table border='2' class='table-condensed'>
     <?php stopFind($_GET['street']); ?>
+    </table>
     </div>
     <?php
   }
@@ -254,7 +256,9 @@ elseif (!empty($_GET['stop'])) {
       }
       else {
         ?>
+        <div class="span6 offset3">
         Sorry, the <?= $route ?> doesn't appear to pass at stop number <?= $_GET['stop'] ?>.
+        </div>
         <?php
       }
   }
@@ -278,20 +282,20 @@ else {
   else {
     $stop = $_GET['stop'];	
     ?>
+    <div class='span6 offset3'>
     Which route would you like to view?
     </br>
-      
     <?php
     foreach ($routes as $route) {
     ?>
     <button class='btn-small' onclick="location.href='/?stop=<?= $stop ?>&route=<?= $route ?>'">
-<!--    <a href=></a>--><?= $route ?>
+      <?= $route ?>
     </button>
-        
+
     <?php
   }
   ?>
-  </br>
+  </div>
   <?php
   }
   ?>
