@@ -215,7 +215,7 @@ function displayInfo($bus, $route) {
 if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
-    <div class='span6 offset3'>
+    <div id='StopInfoTable'>
     <table border='2' class='table-condensed'>
     <?php stopFind($_GET['street']); ?>
     </table>
@@ -227,7 +227,7 @@ if (isset($_GET['street'])) {
 elseif (isset($_GET['lat']) && isset($_GET['lng'])){
   if (!empty($_GET['lat']) && !empty($_GET['lng'])) {
     ?>
-    <div class='span6 offset3'>
+    <div id='StopInfoTable'>
     <table border='2'>
     <?php findMe($_GET['lat'],$_GET['lng'],$_GET['acc']); ?>
     </table>
@@ -245,7 +245,7 @@ elseif (!empty($_GET['stop'])) {
       if ($exists) {
         $bus = getOCJson('stopGPS', $_GET['stop'], $route);
         ?>
-        <div class='span6 offset3'>
+        <div id='StopInfoTable'>
         <table border='2'>
         <?php
         displayInfo($bus, $route);
@@ -256,7 +256,7 @@ elseif (!empty($_GET['stop'])) {
       }
       else {
         ?>
-        <div class="span6 offset3">
+        <div id='StopInfoTable'>
         Sorry, the <?= $route ?> doesn't appear to pass at stop number <?= $_GET['stop'] ?>.
         </div>
         <?php
@@ -268,7 +268,7 @@ else {
   if (count($routes) <= 5) {
     foreach ($routes as $route) {
       ?>
-      <div class='span6 offset3'>
+      <div id='StopInfoTable'>
       <table border='2'>
       <?php
       $bus = getOCJson('stopGPS', $_GET['stop'], $route);

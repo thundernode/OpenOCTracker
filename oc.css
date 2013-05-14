@@ -17,7 +17,7 @@ html,body {
   height:100%;
   margin: 0px auto;
   text-align: center;
-/*  max-width: 650px;*/
+  max-width: 650px;
 }
 /*
 #RouteStop {
@@ -30,7 +30,6 @@ html,body {
   width:100%;
   max-width:280px;
 }
-
 #StopSearch {
   float: left;
   max-width:305px;
@@ -54,19 +53,19 @@ html,body {
   max-width:305px;
   width:100%;
 }
-/*
+
 #RouteList {
   width: 400px;
   margin: 0px auto;
 }
 
-.StopInfoTable {
+#StopInfoTable {
   width: 100%;
   margin: 0px;
   max-width: 650px;
   padding-bottom:10px;
 }
-*/
+
 #ThreeColLeft {
   width: 47.5%;
 }
