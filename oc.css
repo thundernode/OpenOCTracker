@@ -85,3 +85,15 @@ html,body {
 #TwoColRight {
   width: 95%;
 }
+
+#StopsThreeColLeft {
+  width: 5%;
+}
+
+#StopsThreeColCenter {
+  width: 95%;
+}
+
+#StopsThreeColRight {
+  width: 5%;
+}

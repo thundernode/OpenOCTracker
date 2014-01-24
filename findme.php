@@ -19,12 +19,14 @@ function findMe($lat,$lng,$acc){
   $stoplist = fopen('./stops.txt', 'r');
   ?>
   <tr>
-  <td id='TwoColLeft'>&nbsp;</td>
-  <td id='TwoColRight'><a href='https://maps.google.ca/maps?q=loc:<?=$lat?>,<?=$lng?>'>Device Reported Location (Within=<?= round($acc)?>m)</a></td>
+  <td id='StopsThreeColLeft'>&nbsp;</td>
+  <td id='StopsThreeColCenter'><a href='https://maps.google.ca/maps?q=loc:<?=$lat?>,<?=$lng?>'>Device Reported Location (Within=<?= round($acc)?>m)</a></td>
+  <td id='StopsThreeColRight'>&nbsp;</td>
   </tr>
   <tr>
-  <td id='TwoColLeft'> Stop </td>
-  <td id='TwoColRight'> Intersection/Map </td>
+  <td id='StopsThreeColLeft'>Stop</td>
+  <td id='StopsThreeColCenter'>Intersection/Map</a></td>
+  <td id='StopsThreeColRight'>Routes</td>
   </tr>
   <?php
 
@@ -38,7 +40,7 @@ function findMe($lat,$lng,$acc){
                       );
   $distance = calculateDistanceFromLatLong($startPoint,$endPoint);
     if ($distance <= 1) {
-      $stops[] = array('stop' => $data[0], 'intersect' => $data[1], 'lat' => $data[2], 'lng' => $data[3], 'dist' => round($distance*1000));
+      $stops[] = array('stop' => $data[0], 'intersect' => $data[1], 'lat' => $data[2], 'lng' => $data[3], 'dist' => round($distance*1000), 'routes' => $data[4]);
     }
   }
   usort($stops, function($a, $b) {
@@ -50,6 +52,24 @@ function findMe($lat,$lng,$acc){
   <tr>
   <td><a href='/?stop=<?= $stop['stop'] ?>&route='><?= $stop['stop'] ?></a></td>
   <td><a href='https://maps.google.ca/maps?q=loc:<?= $stop['lat']?>,<?= $stop['lng']?>'><?= $stop['intersect'] ?></a> (<?= $stop['dist']?>M)</td>
+  
+  <td> 
+<?php 
+    $routes = explode(" ", $stop['routes']);
+    if (count($routes) <= 4) {
+      foreach($routes as $route) {
+        ?>
+          <?= $route?>
+        <?php
+      }
+    }
+    else {
+    ?>
+      <?= $routes[0]?> <?= $routes[1]?> <?= $routes[2]?> <?= $routes[3]?> <a href='/?stop=<?=$stop['stop']?>'>more</a>
+    <?php
+    }
+?> 
+  </td>
   </tr>
   <?php
   }

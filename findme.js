@@ -2,7 +2,7 @@ function findMe() {
     navigator.geolocation.getCurrentPosition(
     successCallback,
     errorCallback_highAccuracy,
-    {maximumAge:60000, timeout:5000, enableHighAccuracy: true}
+    {maximumAge:0, timeout:5000, enableHighAccuracy: true}
   );
 }
 
@@ -10,7 +10,7 @@ function errorCallback_highAccuracy(position) {
         navigator.geolocation.getCurrentPosition(
                successCallback,
                errorCallback_lowAccuracy,
-               {maximumAge:60000, timeout:10000, enableHighAccuracy: false});
+               {maximumAge:0, timeout:10000, enableHighAccuracy: false});
 }
 
 function errorCallback_lowAccuracy(error) {

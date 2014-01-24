@@ -3,4 +3,6 @@
 $aID='';
 $aKey='';
 $analyticsid='';
+$alertTop = '';
+$alertBottom = '';
 ?>

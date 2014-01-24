@@ -212,6 +212,14 @@ function displayInfo($bus, $route) {
   }
 }
 
+if (isset($alertTop) && !empty($alertTop)) {
+    ?>
+      <div id='alertTop' class="span8 offset2">
+      <?= $alertTop ?>
+      </div>
+    <?php
+}
+
 if (isset($_GET['street'])) {
   if (!empty($_GET['street'])) {
     ?>
@@ -256,7 +264,7 @@ elseif (!empty($_GET['stop'])) {
       }
       else {
         ?>
-        <div id='StopInfoTable'>
+        <div id='StopInfoTable' class='span8 offset2'>
         Sorry, the <?= $route ?> doesn't appear to pass at stop number <?= $_GET['stop'] ?>.
         </div>
         <?php
@@ -319,9 +327,9 @@ else{
 		<form method="get">
 			<div class="span12">
 				<label for="stop">Stop:</label>
-				<input type="tel" name="stop" id="stop" autocomplete="off" value="<?= $_GET['stop'] ?>" placeholder="3025" /><br />	
+        <input type="tel" name="stop" id="stop" autocomplete="off" value="<?php echo (isset($_GET['stop'])) ? $_GET['stop'] : ''; ?>" placeholder="3025" /><br />	
 				<label for="route">Route(s):</label>
-				<input type="tel" id="route" name="route" autocomplete="off" value="<?= $_GET['route'] ?>" placeholder="94 95" /><br />
+        <input type="tel" id="route" name="route" autocomplete="off" value="<?php echo (isset($_GET['route'])) ? $_GET['route'] : ''; ?>" placeholder="94 95" /><br />
 				<input type="submit" value='Get Stop Info' class="btn btn-success"/>
 				<hr />
 			</div>
@@ -342,6 +350,17 @@ else{
 <button id='FindMeButton' onclick="findMe()" class="btn btn-primary">Find Me (only accurate on mobiles)</button>
 </div>
 <br />
+
+<?php
+if (isset($alertBottom) && !empty($alertBottom)) {
+    ?>
+    <div id='alertBottom' class="span8 offset2">
+    <br />
+    <?= $alertBottom ?>
+    </div>
+    <?php
+}
+?>
 
 </div>
 </body>
