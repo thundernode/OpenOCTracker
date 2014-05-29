@@ -148,19 +148,48 @@ function genTitles() {
  */
 function genInfo($trip) {
   if (preg_match('/6/',$trip->BusType) && preg_match('/4/',$trip->BusType)){
-    $type = '(60 or 40 Footer)';
+    if (preg_match('/B/',$trip->BusType)){
+      $type = '(60 or 40 Footer / Bike Rack)';
+      $bike = TRUE;
+    }
+    else {
+      $type = '(60 or 40 Footer)';
+      $bike = FALSE;
+    }
   }
   elseif (preg_match('/6/',$trip->BusType)){
-    $type = '(60 Footer)';
+    if (preg_match('/B/',$trip->BusType)){
+      $type = '(60 Footer / Bike Rack)';
+      $bike = TRUE;
+    }
+    else {
+      $type = '(60 Footer)';
+      $bike = FALSE;
+    }
   }
   elseif (preg_match('/4/',$trip->BusType)){
-    $type = '(40 Footer)';
+    if (preg_match('/B/',$trip->BusType)){
+      $type = '(40 Footer / Bike Rack)';
+      $bike = TRUE;
+    }
+    else {
+      $type = '(40 Footer)';
+      $bike = FALSE;
+    }
   }
   elseif (preg_match('/DD/',$trip->BusType)){
-    $type = '(Double-Decker)';
+    if (preg_match('/B/',$trip->BusType)){
+      $type = '(Double-Decker / Bike Rack)';
+      $bike = TRUE;
+    }
+    else {
+      $type = '(Double-Decker)';
+      $bike = FALSE;
+    }
   }
   else {
     $type = '(Size Unknown)';
+    $bike = FALSE;
   }
   ?>
   <tr>
@@ -184,6 +213,7 @@ function genInfo($trip) {
   ?>
   </tr>
   <?php
+  return $bike;
 }
 
 /**
