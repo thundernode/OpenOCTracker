@@ -72,33 +72,29 @@ function getOCJson($request, $stop, $route = NULL) {
     $url = 'GetNextTripsForStop';
   }
   $c = curl_init();
-  curl_setopt($c, CURLOPT_URL, "https://api.octranspo1.com/v1.1/$url");
+  curl_setopt($c, CURLOPT_URL, "https://api.octranspo1.com/v1.2/$url");
   curl_setopt($c, CURLOPT_POST, TRUE);
-  curl_setopt($c, CURLOPT_POSTFIELDS, "appID=$aID&apiKey=$aKey&stopNo=$stop&routeNo=$route");
+  curl_setopt($c, CURLOPT_POSTFIELDS, "appID=$aID&apiKey=$aKey&stopNo=$stop&routeNo=$route&format=json");
   curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
   curl_setopt($c, CURLOPT_FOLLOWLOCATION, TRUE);
   $response = curl_exec($c);
-  $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "", $response);
-  $xml = simplexml_load_string($response);
-  $json = json_encode($xml);
-  $json_o = json_decode($json);
   curl_close($c);
-  return $xml;
+  return json_decode($response, $assoc = TRUE);
 }
 
 /**
  * Function returns all route for the inputted stop
  */
 function listRoutes($stopjson) {
-  $routes = $stopjson->GetRouteSummaryForStopResult;
-  foreach ($routes->Routes as $route) {
-    if ($route->RouteNo) {
-      $stoproutes[] = $route->RouteNo;
+  $routes = $stopjson['GetRouteSummaryForStopResult'];
+  foreach ($routes['Routes'] as $route) {
+    if ($route['RouteNo']) {
+      $stoproutes[] = $route['RouteNo'];
         return $stoproutes;
     }
   }
-  foreach ($routes->Routes->Route as $route) {
-    $stoproutes[] = $route->RouteNo;
+  foreach ($routes['Routes']['Route'] as $route) {
+    $stoproutes[] = $route['RouteNo'];
   }
   return $stoproutes;
 }
@@ -108,10 +104,10 @@ function listRoutes($stopjson) {
  */
 function checkStop($stopjson, $userroute) {
   $exists = FALSE;
-  $routes = $stopjson->GetRouteSummaryForStopResult;
+  $routes = $stopjson['GetRouteSummaryForStopResult'];
 
-  foreach ($routes->Routes->Route as $route) {
-    if ($userroute == $route->RouteNo) {
+  foreach ($routes['Routes']['Route'] as $route) {
+    if ($userroute == $route['RouteNo']) {
         return TRUE;
     }
   }
@@ -124,8 +120,8 @@ function genHead($stop, $route) {
   ?>
   <tr bordercolor='blue' bgcolor='#CCCCCC'>
   <td id='ThreeColLeft'> <?= $route ?> </td>
-  <td id='ThreeColCenter'> <?= $stop->StopNo ?> </td>
-  <td id='ThreeColRight'> <?= $stop->StopLabel ?> </td>
+  <td id='ThreeColCenter'> <?= $stop['StopNo'] ?> </td>
+  <td id='ThreeColRight'> <?= $stop['StopLabel'] ?> </td>
   </tr>
   <?php
 }
@@ -147,8 +143,8 @@ function genTitles() {
  * Generates the table info for the schedule output
  */
 function genInfo($trip) {
-  if (preg_match('/6/',$trip->BusType) && preg_match('/4/',$trip->BusType)){
-    if (preg_match('/B/',$trip->BusType)){
+  if (preg_match('/6/',$trip['BusType']) && preg_match('/4/',$trip['Bustype'])){
+    if (preg_match('/B/',$trip['BusType'])){
       $type = '(60 or 40 Footer / Bike Rack)';
       $bike = TRUE;
     }
@@ -157,8 +153,8 @@ function genInfo($trip) {
       $bike = FALSE;
     }
   }
-  elseif (preg_match('/6/',$trip->BusType)){
-    if (preg_match('/B/',$trip->BusType)){
+  elseif (preg_match('/6/',$trip['BusType'])){
+    if (preg_match('/B/',$trip['BusType'])){
       $type = '(60 Footer / Bike Rack)';
       $bike = TRUE;
     }
@@ -167,8 +163,8 @@ function genInfo($trip) {
       $bike = FALSE;
     }
   }
-  elseif (preg_match('/4/',$trip->BusType)){
-    if (preg_match('/B/',$trip->BusType)){
+  elseif (preg_match('/4/',$trip['BusType'])){
+    if (preg_match('/B/',$trip['BusType'])){
       $type = '(40 Footer / Bike Rack)';
       $bike = TRUE;
     }
@@ -177,8 +173,8 @@ function genInfo($trip) {
       $bike = FALSE;
     }
   }
-  elseif (preg_match('/DD/',$trip->BusType)){
-    if (preg_match('/B/',$trip->BusType)){
+  elseif (preg_match('/DD/',$trip['BusType'])){
+    if (preg_match('/B/',$trip['BusType'])){
       $type = '(Double-Decker / Bike Rack)';
       $bike = TRUE;
     }
@@ -193,20 +189,20 @@ function genInfo($trip) {
   }
   ?>
   <tr>
-  <td> <?= $trip->TripDestination ?><br /><?= $type ?></td>
-  <td> <?= $trip->AdjustedScheduleTime ?>  min. </td>
+  <td> <?= $trip['TripDestination'] ?><br /><?= $type ?></td>
+  <td> <?= $trip['AdjustedScheduleTime'] ?>  min. </td>
   <?php
-  if ($trip->AdjustmentAge < 0) {
+  if ($trip['AdjustmentAge'] < 0) {
     ?>
     <td> Schedule </td>
     <?php
   }
   else {
-    $time = explode('.', $trip->AdjustmentAge);
+    $time = explode('.', $trip['AdjustmentAge']);
     $fixtime = round($time[1] * 60 / 100);
     ?>
     <td>
-    <?= $time[0] ?> min. <?= $fixtime ?> sec. ago at <a href='https://maps.google.ca/maps?q=loc:<?= $trip->Latitude ?>,<?= $trip->Longitude ?>'>~<?= $trip->GPSSpeed ?> km/h</a>
+    <?= $time[0] ?> min. <?= $fixtime ?> sec. ago at <a href='https://maps.google.ca/maps?q=loc:<?= $trip['Latitude'] ?>,<?= $trip['Longitude'] ?>'>~<?= $trip['GPSSpeed'] ?> km/h</a>
     </td>
     <?php
   }
@@ -220,23 +216,23 @@ function genInfo($trip) {
  * Parses the JSON and outputs the requested shedule
  */
 function displayInfo($bus, $route) {
-  $stop = $bus->GetNextTripsForStopResult;
+  $stop = $bus['GetNextTripsForStopResult'];
   genHead($stop, $route);
-  foreach ($stop->Route->RouteDirection as $routedir) {
+  $stop['Route']['RouteDirection'] = isset($stop['Route']['RouteDirection'][0]) ? $stop['Route']['RouteDirection'] : array($stop['Route']['RouteDirection']);
+  foreach ($stop['Route']['RouteDirection'] as $routedir) {
     ?>
-    <tr><td class='h' colspan='3'> <?= $routedir->Direction ?> </td></tr>
+    <tr><td class='h' colspan='3'> <?= $routedir['Direction'] ?> </td></tr>
     <?php
     genTitles();
-    foreach ($routedir->Trips as $trip) {
-      if ($trip->Trip->TripDestination) {
-        foreach ($trip->Trip as $info) {
-          genInfo($info);
-        }
+    $routedir['Trips']['Trip'] = isset($routedir['Trips']['Trip'][0]) ? $routedir['Trips']['Trip'] : array($routedir['Trips']['Trip']);
+    foreach ($routedir['Trips']['Trip'] as $trip) {
+      if ($trip['TripDestination']) {
+        genInfo($trip);
       }
       else {
-        ?>
-	<tr><td class='h' colspan='3'>No trips scheduled at this time</td></tr>
-	<?php
+      ?>
+      <tr><td class='h' colspan='3'>No trips scheduled at this time</td></tr>
+      <?php
       }
     }
   }
