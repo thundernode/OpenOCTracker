@@ -290,11 +290,13 @@
                   <?php
                   }
                   else {
-                  ?>
-                  <div id='StopInfoTable' class='span8 offset2'>
-                     Sorry, the <?= $route ?> doesn't appear to pass at stop number <?= $_GET['stop'] ?>.
-                  </div>
-                  <?php
+                     if ($route != "") {
+                     ?>
+                     <div id='StopInfoTable' class='span8 offset2'>
+                        Sorry, the <?= $route ?> doesn't appear to pass at stop number <?= $_GET['stop'] ?>.
+                     </div>
+                     <?php
+                     }
                   }
                }
             }
