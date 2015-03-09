@@ -106,6 +106,7 @@
          function checkStop($stopjson, $userroute) {
             $exists = FALSE;
             $routes = $stopjson['GetRouteSummaryForStopResult'];
+            $routes['Routes']['Route'] = isset($routes['Routes']['Route'][0]) ? $routes['Routes']['Route'] : array($routes['Routes']['Route']);
 
             foreach ($routes['Routes']['Route'] as $route) {
                if ($userroute == $route['RouteNo']) {
