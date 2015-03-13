@@ -65,6 +65,12 @@
          * the routes that go to a stop or 'stopGPS' if you want the schedule'
          */
          function getOCJson($request, $stop, $route = NULL) {
+            if (isset($_GET['timeout']) && !empty($_GET['timeout'])){
+               $timeout = $_GET['timeout'];
+            }
+            else {
+               $timeout = 10;
+            }
             require 'creds.php';
             if ($request == 'stopSum') {
                $url = 'GetRouteSummaryForStop';
@@ -78,9 +84,23 @@
             curl_setopt($c, CURLOPT_POSTFIELDS, "appID=$aID&apiKey=$aKey&stopNo=$stop&routeNo=$route&format=json");
             curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($c, CURLOPT_FOLLOWLOCATION, TRUE);
+            curl_setopt($c, CURLOPT_CONNECTTIMEOUT , $timeout);
+            curl_setopt($c, CURLOPT_TIMEOUT, $timeout);
             $response = curl_exec($c);
-            curl_close($c);
-            return json_decode($response, $assoc = TRUE);
+            if (curl_errno($c) !== 0) {
+               $error["$url" . "Result"]['Error'] = "curl error " . curl_errno($c);
+               curl_close($c);
+               return $error;
+            }
+            elseif ($response == "") {
+               $error["$url" . "Result"]['Error'] = "Empty Response";
+               curl_close($c);
+               return $error;
+            }
+            else {
+               curl_close($c);
+               return json_decode($response, $assoc = TRUE);
+            }
          }
 
          /**
@@ -103,14 +123,42 @@
          /**
          * Function checks if the inputted route passes at the inputted stop
          */
-         function checkStop($stopjson, $userroute) {
-            $exists = FALSE;
-            $routes = $stopjson['GetRouteSummaryForStopResult'];
-            $routes['Routes']['Route'] = isset($routes['Routes']['Route'][0]) ? $routes['Routes']['Route'] : array($routes['Routes']['Route']);
-
-            foreach ($routes['Routes']['Route'] as $route) {
-               if ($userroute == $route['RouteNo']) {
-                  return TRUE;
+         function checkStop($info, $stop, $route = NULL) {
+            if (isset($_GET['timeout']) && !empty($_GET['timeout'])){
+               $timeout = $_GET['timeout'];
+            }
+            else {
+               $timeout = 10;
+            }
+            $error = $info['Error'];
+            if (! isset($info['Error'])) {
+               return "An unknown error has occured for $stop $route";
+            }
+            elseif ($error == "") {
+               return false;
+            }
+            else {
+               switch ($error) {
+                  case "10":
+                  return "Stop $stop doesn't appear to exist.";
+                  case "11":
+                  if ($route != "") {
+                     return "Route $route doesn't appear to exist.";
+                  }
+                  else {
+                     return "There appears to be a blank space in the Route field.";
+                  }
+                  case "12":
+                  if ($route != "") {
+                     return "Route $route doesn't appear to service stop $stop.";
+                  }
+                  else {
+                     return "There appears to be a blank space in the Route field.";
+                  }
+                  case "curl error 28":
+                  return "Connection to octranspo timed out (waited $timeout seconds), <a href='/?stop=$stop&route=" . $_GET['route'] . "&timeout=" . ($timeout + 10) . "'>try longer?</a>";
+                  default:
+                  return "An unknown error has occured ($error)";
                }
             }
          }
@@ -276,10 +324,9 @@
             if (!empty($_GET['route'])) {
                $routes = preg_split("/(\+|\ )/", $_GET['route']);
                foreach ($routes as $route) {
-                  $stop = getOCJson('stopSum', $_GET['stop']);
-                  $exists = checkStop($stop, $route);
-                  if ($exists) {
-                     $bus = getOCJson('stopGPS', $_GET['stop'], $route);
+                  $bus = getOCJson('stopGPS', $_GET['stop'], $route);
+                  $error = checkStop($bus['GetNextTripsForStopResult'], $_GET['stop'], $route);
+                  if (! $error) {
                   ?>
                   <div id='StopInfoTable'>
                      <table border='2'>
@@ -291,54 +338,63 @@
                   <?php
                   }
                   else {
-                     if ($route != "") {
-                     ?>
-                     <div id='StopInfoTable' class='span8 offset2'>
-                        Sorry, the <?= $route ?> doesn't appear to pass at stop number <?= $_GET['stop'] ?>.
-                     </div>
-                     <?php
-                     }
-                  }
-               }
-            }
-            else {
-               $routes = array_unique(listRoutes(getOCJson('stopSum', $_GET['stop'])));
-               if (count($routes) <= 5) {
-                  foreach ($routes as $route) {
                   ?>
-                  <div id='StopInfoTable'>
-                     <table border='2'>
-                        <?php
-                           $bus = getOCJson('stopGPS', $_GET['stop'], $route);
-                           displayInfo($bus, $route);
-                        ?>
-                     </table>
+                  <div id='StopInfoTable' class='span8 offset2'>
+                     <?= $error ?>
                   </div>
                   <?php
                   }
                }
-               else {
-                  $stop = $_GET['stop'];
-               ?>
-               <div class='span6 offset3'>
-                  Which route would you like to view?
-                  </br>
-                  <?php
+            }
+            else {
+               $routelist = getOCJson('stopSum', $_GET['stop']);
+               $error = checkStop($routelist['GetRouteSummaryForStopResult'], $_GET['stop']);
+               if (! $error) {
+                  $routes = array_unique(listRoutes($routelist));
+                  if (count($routes) <= 5) {
                      foreach ($routes as $route) {
                      ?>
-                     <button class='btn-small' onclick="location.href='/?stop=<?= $stop ?>&route=<?= $route ?>'">
-                        <?= $route ?>
-                     </button>
-
+                     <div id='StopInfoTable'>
+                        <table border='2'>
+                           <?php
+                              $bus = getOCJson('stopGPS', $_GET['stop'], $route);
+                              displayInfo($bus, $route);
+                           ?>
+                        </table>
+                     </div>
                      <?php
                      }
+                  }
+                  else {
+                     $stop = $_GET['stop'];
                   ?>
+                  <div class='span6 offset3'>
+                     Which route would you like to view?
+                     </br>
+                     <?php
+                        foreach ($routes as $route) {
+                        ?>
+                        <button class='btn-small' onclick="location.href='/?stop=<?= $stop ?>&route=<?= $route ?>'">
+                           <?= $route ?>
+                        </button>
+
+                        <?php
+                        }
+                     ?>
+                  </div>
+                  <?php
+                  }
+               ?>
+               </br>
+               <?php
+               }
+               else {
+               ?>
+               <div id='StopInfoTable' class='span8 offset2'>
+                  <?= $error ?>
                </div>
                <?php
                }
-            ?>
-            </br>
-            <?php
             }
          }
          else{
