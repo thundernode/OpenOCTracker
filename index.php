@@ -155,8 +155,10 @@
                   else {
                      return "There appears to be a blank space in the Route field.";
                   }
+                  case "curl error 6":
+                     return 'Could not contact Octranspo Servers.  Please refresh the page. <script type="text/javascript"> location.reload(); </script>';
                   case "curl error 28":
-                  return "Connection to octranspo timed out (waited $timeout seconds), <a href='/?stop=$stop&route=" . $_GET['route'] . "&timeout=" . ($timeout + 10) . "'>try longer?</a>";
+                     return "Connection to octranspo timed out (waited $timeout seconds), <a href='/?stop=$stop&route=" . $_GET['route'] . "&timeout=" . ($timeout + 10) . "'>try longer?</a>";
                   default:
                   return "An unknown error has occured ($error)";
                }
