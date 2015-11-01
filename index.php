@@ -215,16 +215,6 @@
                   $bike = FALSE;
                }
             }
-            elseif (preg_match('/4/',$trip['BusType'])){
-               if (preg_match('/B/',$trip['BusType'])){
-                  $type = '(40 Footer / Bike Rack)';
-                  $bike = TRUE;
-               }
-               else {
-                  $type = '(40 Footer)';
-                  $bike = FALSE;
-               }
-            }
             elseif (preg_match('/DD/',$trip['BusType'])){
                if (preg_match('/B/',$trip['BusType'])){
                   $type = '(Double-Decker / Bike Rack)';
@@ -232,6 +222,16 @@
                }
                else {
                   $type = '(Double-Decker)';
+                  $bike = FALSE;
+               }
+            }
+            elseif (preg_match('/4/',$trip['BusType'])){
+               if (preg_match('/B/',$trip['BusType'])){
+                  $type = '(40 Footer / Bike Rack)';
+                  $bike = TRUE;
+               }
+               else {
+                  $type = '(40 Footer)';
                   $bike = FALSE;
                }
             }
