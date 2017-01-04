@@ -254,7 +254,7 @@
                   $fixtime = round($time[1] * 60 / 100);
                ?>
                <td>
-                  <?= $time[0] ?> min. <?= $fixtime ?> sec. ago at <a href='https://maps.google.ca/maps?q=loc:<?= $trip['Latitude'] ?>,<?= $trip['Longitude'] ?>'>~<?= $trip['GPSSpeed'] ?> km/h</a>
+                  <?= $time[0] ?> min. <?= $fixtime ?> sec. ago at <a href='https://maps.google.ca/maps?q=<?= $trip['Latitude'] ?>,<?= $trip['Longitude'] ?>&ll=<?= $trip['Latitude'] ?>,<?= $trip['Longitude'] ?>&z=15'>~<?= $trip['GPSSpeed'] ?> km/h</a>
                </td>
                <?php
                }

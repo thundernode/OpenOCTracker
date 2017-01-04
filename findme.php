@@ -20,7 +20,7 @@ function findMe($lat,$lng,$acc){
   ?>
   <tr>
   <td id='StopsThreeColLeft'>&nbsp;</td>
-  <td id='StopsThreeColCenter'><a href='https://maps.google.ca/maps?q=loc:<?=$lat?>,<?=$lng?>'>Device Reported Location (Within=<?= round($acc)?>m)</a></td>
+  <td id='StopsThreeColCenter'><a href='https://maps.google.ca/maps?q=<?=$lat?>,<?=$lng?>&ll=<?=$lat?>,<?=$lng?>&z=15'>Device Reported Location (Within=<?= round($acc)?>m)</a></td>
   <td id='StopsThreeColRight'>&nbsp;</td>
   </tr>
   <tr>
@@ -51,7 +51,7 @@ function findMe($lat,$lng,$acc){
   ?>
   <tr>
   <td><a href='/?stop=<?= $stop['stop'] ?>&route='><?= $stop['stop'] ?></a></td>
-  <td><a href='https://maps.google.ca/maps?q=loc:<?= $stop['lat']?>,<?= $stop['lng']?>'><?= $stop['intersect'] ?></a> (<?= $stop['dist']?>M)</td>
+  <td><a href='https://maps.google.ca/maps?q=<?=$stop['lat']?>,<?=$stop['lng']?>&ll=<?=$stop['lat']?>,<?=$stop['lng']?>&z=15'><?= $stop['intersect'] ?></a> (<?= $stop['dist']?>M)</td>
   
   <td> 
 <?php 

@@ -14,7 +14,7 @@ function stopFind($street) {
       ?>
       <tr>
       <td><a href='/?stop=<?= $results[0] ?>&route='><?= $results[0] ?></a></td>
-      <td><a href='https://maps.google.ca/maps?q=loc:<?=$results[2]?>,<?=$results[3]?>'><?= $results[1] ?></a></td>
+      <td><a href='https://maps.google.ca/maps?q=<?= $results[2] ?>,<?= $results[3] ?>&ll=<?= $results[2] ?>,<?= $results[3] ?>&z=15'><?= $results[1] ?></a></td>
       <td>
         <?php
         $routes = explode(" ", $results[4]);
