@@ -132,7 +132,7 @@
             }
             $error = $info['Error'];
             if (! isset($info['Error'])) {
-               return "An unknown error has occured for $stop $route";
+              return "OC Transpo's server appears to be broken ($stop $route)";
             }
             elseif ($error == "") {
                return false;
