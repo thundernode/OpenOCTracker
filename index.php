@@ -31,6 +31,7 @@
    <head>
       <title> OC Help Me </title>
 
+      <meta name="theme-color" content="#d83619" />
       <link rel="stylesheet" type="text/css" href="oc.css" />
       <script type="text/javascript" src="findme.js"></script>
       <link href='favicon.ico' rel='apple-touch-icon-precomposed' />
