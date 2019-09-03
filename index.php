@@ -80,7 +80,7 @@
                $url = 'GetNextTripsForStop';
             }
             $c = curl_init();
-            curl_setopt($c, CURLOPT_URL, "https://api.octranspo1.com/v1.2/$url");
+            curl_setopt($c, CURLOPT_URL, "https://api.octranspo1.com/v1.3/$url");
             curl_setopt($c, CURLOPT_POST, TRUE);
             curl_setopt($c, CURLOPT_POSTFIELDS, "appID=$aID&apiKey=$aKey&stopNo=$stop&routeNo=$route&format=json");
             curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
